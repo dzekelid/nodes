@@ -15,6 +15,46 @@ produces:
 consumes:
 - application/json
 paths:
+  /?Action=ListAllowedNodeTypeModifications:
+    get:
+      summary: List Allowed Node Type Modifications
+      description: |-
+        Lists all available node types that you
+                    can scale your Redis cluster's or replication group's current node type up to.
+      operationId: listAllowedNodeTypeModifications
+      x-api-path-slug: actionlistallowednodetypemodifications-get
+      parameters:
+      - in: query
+        name: CacheClusterId
+        description: The name of the cache cluster you want to scale up to a larger
+          node instanced type
+        type: string
+      - in: query
+        name: ReplicationGroupId
+        description: The name of the replication group want to scale up to a larger
+          node type
+        type: string
+      responses:
+        200:
+          description: OK
+      tags:
+      - Node Type Modifications
+  /?Action=ListAvailableNodeTypes:
+    get:
+      summary: List Available Node Types
+      description: .
+      operationId: listAvailableNodeTypes
+      x-api-path-slug: actionlistavailablenodetypes-get
+      parameters:
+      - in: query
+        name: AvailableNodeTypes.member.N
+        description: 'Type: array of AvailableNodeType objects'
+        type: string
+      responses:
+        200:
+          description: OK
+      tags:
+      - Node Types
   /?Action=DescribeReservedCacheNodes:
     get:
       summary: Describe Reserved Cache Nodes
@@ -97,6 +137,32 @@ paths:
       - in: query
         name: ReservedCacheNodesOfferingId
         description: The offering identifier filter value
+        type: string
+      responses:
+        200:
+          description: OK
+      tags:
+      - Reserved Cache Nodes
+  /?Action=PurchaseReservedCacheNodesOffering:
+    get:
+      summary: Purchase Reserved Cache Nodes Offering
+      description: |-
+        Allows you to purchase a reserved
+                    cache node offering.
+      operationId: purchaseReservedCacheNodesOffering
+      x-api-path-slug: actionpurchasereservedcachenodesoffering-get
+      parameters:
+      - in: query
+        name: CacheNodeCount
+        description: The number of cache node instances to reserve
+        type: string
+      - in: query
+        name: ReservedCacheNodeId
+        description: A customer-specified identifier to track this reservation
+        type: string
+      - in: query
+        name: ReservedCacheNodesOfferingId
+        description: The ID of the reserved cache node offering to purchase
         type: string
       responses:
         200:

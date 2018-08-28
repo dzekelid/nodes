@@ -258,6 +258,23 @@ paths:
       tags:
       - Watch
       - Nodes
+  /api/v1beta3/watch/nodes/{name}:
+    get:
+      summary: Get Watch Nodes Name
+      description: Watch a particular node.
+      operationId: watchNode
+      x-api-path-slug: apiv1beta3watchnodesname-get
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Watch
+      - Nodes
+      - Name
 x-streamrank:
   polling_total_time_average: 0
   polling_size_download_average: 0

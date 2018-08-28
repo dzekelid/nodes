@@ -1059,6 +1059,455 @@ paths:
       - Nodes
       - Node
       - Forks
+  /nodes/{node_id}/identifiers/:
+    get:
+      summary: List all identifiers
+      description: |-
+        List all identifiers associated with a given node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of identifiers. Each resource in the array is a separate identifier object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/identifiers/?filter[category]=ark
+
+        Identifiers may be filtered by their `category` e.g `ark` or `doi`.
+      operationId: nodes_identifiers_list
+      x-api-path-slug: nodesnode-ididentifiers-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Nodeentifiers
+  /nodes/{node_id}/institutions/:
+    get:
+      summary: List all institutions
+      description: |-
+        List of all institutions affiliated with this node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 affilited institutions. Each resource in the array is a separate institution object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+      operationId: nodes_institutions_list
+      x-api-path-slug: nodesnode-idinstitutions-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Institutions
+  /nodes/{node_id}/linked_nodes/:
+    get:
+      summary: List all linked nodes
+      description: |-
+        List of all nodes linked to the given node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 nodes. Each resource in the array is a separate node object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/?filter[title]=reproducibility.
+
+        Nodes may be filtered by their `title`, `category`, `description`, `public`, `registration`, or `tags`. `title`, `description`, and `category` are string fields and will be filteres using simple substring matching. `public`, `registration` are boolean and can be filtered using truthy values, such as `true`, `false`, `0`, `1`. `tags` is an array of simple strings.
+      operationId: nodes_linked_nodes_list
+      x-api-path-slug: nodesnode-idlinked-nodes-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Linked
+      - Nodes
+  /nodes/{node_id}/logs/:
+    get:
+      summary: List all logs
+      description: |-
+        A paginated list of all logs associated with a given node.
+
+        The returned logs are sorted by their `date`, with the most recents logs appearing first.
+
+        This list includes the logs of the specified node as well as the logs of that node's children to which the current user has read-only access.
+
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 logs. Each resource in the array is a separate logs object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include logs that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/logs/?filter[action]=made_private.
+
+        Nodes may be filtered by their `action`, and `date`.
+      operationId: nodes_logs_list
+      x-api-path-slug: nodesnode-idlogs-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Logs
+  /nodes/{node_id}/preprints/:
+    get:
+      summary: List all preprints
+      description: |-
+        A paginated list of preprints related to a given node. The returned preprints are sorted by their creation date, with the most recent preprints appearing first.
+
+        **Note: This API endpoint is under active development, and is subject to change in the future.**
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 preprints. Each resource in the array is a separate preprint object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+      operationId: nodes_preprints_list
+      x-api-path-slug: nodesnode-idpreprints-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Preprints
+  /nodes/{node_id}/registrations/:
+    get:
+      summary: List all registrations
+      description: |-
+        List of all registrations of the given node.
+        ####Returns
+
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 registrations. Each resource in the array is a separate registrations object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+
+        You can optionally request that the response only include registrations that match your filters by utilizing the filter query parameter, e.g. https://api.osf.io/v2/registrations/?filter[title]=open.
+
+        Registrations may be filtered by their `id`, `title`, `category`, `description`, `public`, `tags`, `date_created`, `date_modified`, `root`, `parent`, and `contributors`.
+      operationId: nodes_registrations_list
+      x-api-path-slug: nodesnode-idregistrations-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Registrations
+  /nodes/{node_id}/view_only_links/:
+    get:
+      summary: List all view only links
+      description: |-
+        List of view only links on a node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 view only links. Each resource in the array is a view only link object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        ####Permissions
+
+        View only links on a node, public or private, are readable and writeable only by users that are administrators on the node.
+
+        ####Filtering
+
+        You can optionally request that the response only include view only links that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/view_only_links/?filter[anonymous]=true.
+
+        View Only Links may be filtered based on their `name`, `anonymous` and `date_created` fields. Possible comparison operators include 'gt' (greater than), 'gte'(greater than or equal to), 'lt' (less than) and 'lte' (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+      operationId: nodes_view_only_links_list
+      x-api-path-slug: nodesnode-idview-only-links-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - View
+      - Only
+      - Links
+  /nodes/{node_id}/view_only_links/{link_id}/:
+    get:
+      summary: Retrieve a view only link
+      description: |-
+        Retrieves the details of a view only link on a node.
+        ####Returns
+        Returns a JSON object with a `data` key containing the representation of the requested view only link, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+        ####Permissions
+
+        View only links on a node, public or private, are readable and writeable only by users that are administrators on the node.
+      operationId: nodes_view_only_links_read
+      x-api-path-slug: nodesnode-idview-only-linkslink-id-get
+      parameters:
+      - in: path
+        name: link_id
+        description: The unique identifier of the view only link
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - View
+      - Only
+      - Links
+      - Link
+  /nodes/{node_id}/wikis/:
+    get:
+      summary: List all wikis
+      description: |-
+        List of wiki pages on a node.
+        ####Returns
+        Paginated list of the node's current wiki page versions ordered by their date_modified. Each resource contains the full representation of the wiki, meaning additional requests to an individual wiki's detail view are not necessary.
+
+        Note that if an anonymous view_only key is being used, the user relationship will not be exposed.
+
+        If the request is unsuccessful, a JSON object with an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+        #### Filtering
+        Wiki pages can be filtered based on their `name` and `date_modified` fields.
+        + `filter[name]=<Str>` -- filter wiki pages by name
+        + `filter[date_modified][comparison_operator]=YYYY-MM-DDTH:M:S` -- filter wiki pages based on date modified.
+
+        Possible comparison operators include 'gt' (greater than), 'gte'(greater than or equal to), 'lt' (less than) and 'lte' (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+      operationId: nodes_wikis_list
+      x-api-path-slug: nodesnode-idwikis-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Wikis
+  /registrations/{registration_id}/linked_nodes/:
+    get:
+      summary: List all linked nodes
+      description: |-
+        List of all nodes linked to the registration.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 nodes. Each resource in the array is a separate node object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wucr8/linked_nodes/?filter[title]=reproducibility/?filter[title]=reproducibility.
+
+        Nodes may be filtered by their `title`, `category`, `description`, `public`, `registration`, or `tags`. `title`, `description`, and `category` are string fields and will be filteres using simple substring matching. `public`, `registration` are boolean and can be filtered using truthy values, such as `true`, `false`, `0`, `1`. `tags` is an array of simple strings.
+      operationId: registrations_linked_nodes_list
+      x-api-path-slug: registrationsregistration-idlinked-nodes-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Linked
+      - Nodes
+  /users/{user_id}/nodes/:
+    get:
+      summary: List all nodes
+      description: |-
+        A paginated list of nodes that the user is a contributor to. The returned nodes are sorted by their `date_modified`, with the most recently updated nodes appearing first.
+
+        If the user ID in the path is the same as the logged-in user, all nodes will be returned. Otherwise, only the user's public nodes will be returned.
+
+        User registrations are not available at this endpoint.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of 10 nodes. Each resource in the array is a separate node object and contains the full representation of the node, meaning additional requests to a node's detail view are not necessary.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        #### Filtering
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/users/cdi38/nodes/?filter[title]=open.
+
+        Nodes may be filtered by their `id`, `title`, `category`, `description`, `public`, `tags`, `date_created`, `date_modified`, `root`, `parent`, `preprint`, and `contributors`.
+      operationId: users_nodes_list
+      x-api-path-slug: usersuser-idnodes-get
+      parameters:
+      - in: path
+        name: user_id
+        description: The unique identifier of the user
+      responses:
+        200:
+          description: OK
+      tags:
+      - Users
+      - User
+      - Nodes
+  /view_only_links/{link_id}/nodes/:
+    get:
+      summary: List all nodes
+      description: |-
+        The list of nodes which this view only link gives read-only access to.
+        #### Permissions
+        Only project administrators may retrieve the nodes of a view only link. Attempting to retrieve a view only link without appropriate permissions will result in a 403 Forbidden response.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+        The `data` key contains an array of up to 10 nodes. Each resource in the array is a separate node object and contains the full representation of the node, meaning additional requests to a node's detail view are not necessary.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: view_only_links_node_list
+      x-api-path-slug: view-only-linkslink-idnodes-get
+      parameters:
+      - in: path
+        name: link_id
+        description: The unique identifier of the view only link
+      responses:
+        200:
+          description: OK
+      tags:
+      - View
+      - Only
+      - Links
+      - Link
+      - Nodes
+  /:
+    get:
+      summary: Root
+      description: |-
+        Welcome to the Open Science Framework API. With this API you can access users, projects, components, logs, and files from the [Open Science Framework](https://osf.io/). The Open Science Framework (OSF) is a free, open-source service maintained by the [Center for Open Science](http://cos.io/).
+
+        #### Returns
+        A JSON object with `meta` and `links` keys.
+
+        The `meta` key contains information such as a welcome message from the API, the specified version of the request, and the full representation of the current user, if authentication credentials were provided in the request.
+
+        The `links` key contains links to the following entity collections: [addons](), [collections](), [institutions](#Institutions_institutions_list), [licenses](#Licenses_license_list), [metaschemas](), [nodes](#Nodes_nodes_list), [registrations](), [users](#Users_users_list)
+      operationId: base_read
+      x-api-path-slug: get
+      responses:
+        200:
+          description: OK
+      tags:
+      - Root
+  /actions/:
+    get:
+      summary: Actions
+      description: |-
+        A log can have one of many actions. The complete list of loggable actions (in the format {identifier}: {description}) is as follows:
+        * `project_created`: A Node is created
+        * `project_registered`: A Node is registered
+        * `project_deleted`: A Node is deleted
+        * `created_from`: A Node is created using an existing Node as a template
+        * `pointer_created`: A Pointer is created
+        * `pointer_forked`: A Pointer is forked
+        * `pointer_removed`: A Pointer is removed
+        * `node_removed`: A component is deleted
+        * `node_forked`: A Node is forked
+        ---
+        * `made_public`: A Node is made public
+        * `made_private`: A Node is made private
+        * `tag_added`: A tag is added to a Node
+        * `tag_removed`: A tag is removed from a Node
+        * `edit_title`: A Node's title is changed
+        * `edit_description`: A Node's description is changed
+        * `updated_fields`: One or more of a Node's fields are changed
+        * `external_ids_added`: An external identifier is added to a Node (e.g. DOI, ARK)
+        * `view_only_link_added`: A view-only link was added to a Node
+        * `view_only_link_removed`:  A view-only link was removed from a Node
+        ---
+        * `contributor_added`: A Contributor is added to a Node
+        * `contributor_removed`: A Contributor is removed from a Node
+        * `contributors_reordered`: A Contributor's position in a Node's bibliography is changed
+        * `permissions_updated`: A Contributor`s permissions on a Node are changed
+        * `made_contributor_visible`: A Contributor is made bibliographically visible on a Node
+        * `made_contributor_invisible`: A Contributor is made bibliographically invisible on a Node
+        ---
+        * `wiki_updated`: A Node's wiki is updated
+        * `wiki_deleted`: A Node's wiki is deleted
+        * `wiki_renamed`: A Node's wiki is renamed
+        * `made_wiki_public`: A Node's wiki is made public
+        * `made_wiki_private`: A Node's wiki is made private
+        ---
+        * `addon_added`: An add-on is linked to a Node
+        * `addon_removed`: An add-on is unlinked from a Node
+        * `addon_file_moved`: A File in a Node's linked add-on is moved
+        * `addon_file_copied`: A File in a Node's linked add-on is copied
+        * `addon_file_renamed`: A File in a Node's linked add-on is renamed
+        * `node_authorized`: An addon is authorized for a project
+        * `node_deauthorized`: An addon is deauthorized for a project
+        * `folder_created`: A Folder is created in a Node's linked add-on
+        * `file_added`: A File is added to a Node's linked add-on
+        * `file_updated`: A File is updated on a Node's linked add-on
+        * `file_removed`: A File is removed from a Node's linked add-on
+        * `file_restored`: A File is restored in a Node's linked add-on
+        ---
+        * `comment_added`: A Comment is added to some item
+        * `comment_removed`: A Comment is removed from some item
+        * `comment_updated`: A Comment is updated on some item
+        ---
+        * `embargo_initiated`: An embargoed Registration is proposed on a Node
+        * `embargo_approved`: A proposed Embargo of a Node is approved
+        * `embargo_cancelled`: A proposed Embargo of a Node is cancelled
+        * `embargo_completed`: A proposed Embargo of a Node is completed
+        * `retraction_initiated`: A Withdrawal of a Registration is proposed
+        * `retraction_approved`: A Withdrawal of a Registration is approved
+        * `retraction_cancelled`: A Withdrawal of a Registration is cancelled
+        * `registration_initiated`: A Registration of a Node is proposed
+        * `registration_approved`: A proposed Registration is approved
+        * `registration_cancelled`: A proposed Registration is cancelled
+      operationId: logs_actions
+      x-api-path-slug: actions-get
+      responses:
+        200:
+          description: OK
+      tags:
+      - Actions
 x-streamrank:
   polling_total_time_average: 0
   polling_size_download_average: 0

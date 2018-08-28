@@ -16,6 +16,31 @@ produces:
 consumes:
 - application/json
 paths:
+  /?Action=DescribeReservedNodes:
+    get:
+      summary: Describe Reserved Nodes
+      description: Returns the descriptions of the reserved nodes.
+      operationId: describeReservedNodes
+      x-api-path-slug: actiondescribereservednodes-get
+      parameters:
+      - in: query
+        name: Marker
+        description: An optional parameter that specifies the starting point to return
+          a set of response            records
+        type: string
+      - in: query
+        name: MaxRecords
+        description: The maximum number of response records to return in each call
+        type: string
+      - in: query
+        name: ReservedNodeId
+        description: Identifier for the node reservation
+        type: string
+      responses:
+        200:
+          description: OK
+      tags:
+      - Reserved Nodes
   /?Action=DescribeReservedNodeOfferings:
     get:
       summary: Describe Reserved Node Offerings

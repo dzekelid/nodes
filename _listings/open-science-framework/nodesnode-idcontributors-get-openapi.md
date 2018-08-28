@@ -551,6 +551,967 @@ paths:
       - Nodes
       - Node
       - Contributors
+    post:
+      summary: Create a contributor
+      description: |-
+        Adds a contributor to a node, effectively creating a relationship between the node and a user.
+
+        Contributors are users who can make changes to the node or, in the case of private nodes, have read access to the node.
+
+        Contributors are categorized as either "bibliographic" or "non-bibliographic" contributors. From a permissions standpoint, both are the same, but bibliographic contributors are included in citations and are listed on the project overview page on the OSF, while non-bibliographic contributors are not.
+        #### Permissions
+        Only project administrators can add contributors to a node.
+        #### Required
+        A relationship object with a `data` key, containing the `users` type and valid user ID is required.
+
+        All attributes describing the relationship between the node and the user are optional.
+        #### Returns
+        Returns a JSON object with a `data` key containing the representation of the new contributor, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_contributors_create
+      x-api-path-slug: nodesnode-idcontributors-post
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/holder'
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Contributors
+  /nodes/{node_id}/contributors/{user_id}/:
+    delete:
+      summary: Delete a contributor
+      description: |-
+        Removes a contributor from a node. This request only removes the relationship between the node and the user, it does not delete the user itself.
+
+        A node must always have at least one admin, and attempting to remove the only admin from a node will result in a **400 Bad Request** response.
+        #### Permissions
+        A user can remove themselves as a node contributor. Otherwise, only project administrators can remove contributors.
+        #### Returns
+        If the request is successful, no content is returned.
+
+        If the request is unsuccessful, a JSON object with an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_contributors_delete
+      x-api-path-slug: nodesnode-idcontributorsuser-id-delete
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      - in: path
+        name: user_id
+        description: The unique identifier of the user
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Contributors
+      - User
+    get:
+      summary: Retrieve a contributor
+      description: |-
+        Retrieves the details of a given contributor.
+
+        Contributors are users who can make changes to the node or, in the case of private nodes, have read access to the node.
+
+        Contributors are categorized as either "bibliographic" or "non-bibliographic". From a permissions standpoint, both are the same, but bibliographic contributors are included in citations and are listed on the project overview page on the OSF, while non-bibliographic contributors are not.
+        #### Returns
+        Returns a JSON object with a `data` key containing the representation of the requested contributor, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_contributors_read
+      x-api-path-slug: nodesnode-idcontributorsuser-id-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      - in: path
+        name: user_id
+        description: The unique identifier of the user
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Contributors
+      - User
+    patch:
+      summary: Update a contributor
+      description: |-
+        Updates a contributor by setting the values of the attributes specified in the request body. Any unspecified attributes will be left unchanged.
+
+        Contributors can be updated with either a **PUT** or **PATCH** request. Since this endpoint has no mandatory attributes, PUT and PATCH are functionally the same.
+        #### Permissions
+        Only project administrators can update the contributors on a node.
+        #### Returns
+        Returns a JSON object with a `data` key containing the new representation of the updated contributor, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+
+        If the given user is not already in the contributor list, a 404 Not Found error will be returned. A node must always have at least one admin, and any attempt to downgrade the permissions of a sole admin will result in a 400 Bad Request error.
+      operationId: nodes_contributors_partial_update
+      x-api-path-slug: nodesnode-idcontributorsuser-id-patch
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/holder'
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      - in: path
+        name: user_id
+        description: The unique identifier of the user
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Contributors
+      - User
+  /nodes/{node_id}/draft_registrations/:
+    get:
+      summary: List all draft registrations
+      description: |-
+        A paginated list of all of the draft registrations of a given node.
+
+        Draft registrations contain the supplemental registration questions that accompany a registration. A registration is a frozen version of the project that can never be edited or deleted, but can be withdrawn.
+
+        Your original project remains editable but will now have the draft registration linked to it.
+        #### Permissions
+        Only project administrators may view draft registrations.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of 10 draft registrations. Each resource in the array is a separate draft registration object and contains the full representation of the draft registration, meaning additional requests to a draft registration's detail view are not necessary.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+      operationId: nodes_draft_registrations_list
+      x-api-path-slug: nodesnode-iddraft-registrations-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Draft
+      - Registrations
+    post:
+      summary: Create a draft registration
+      description: |-
+        Initiate a draft registration of the current node.
+        Draft registrations contain the supplemental registration questions that accompany a registration. A registration is a frozen version of the project that can never be edited or deleted, but can be withdrawn.
+
+        Your original project remains editable but will now have the draft registration linked to it.
+        #### Permissions
+        Only project administrators may view create registrations.
+        #### Required
+        Required fields for creating a draft registration include:
+
+        &nbsp;&nbsp;&nbsp;&nbsp`registration_supplement`
+        #### Returns
+        Returns a JSON object with a `data` key containing the representation of the created draft registration, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_draft_registrations_create
+      x-api-path-slug: nodesnode-iddraft-registrations-post
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/holder'
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Draft
+      - Registrations
+  /nodes/{node_id}/draft_registrations/{draft_id}/:
+    delete:
+      summary: Delete a draft registration
+      description: |-
+        Permanently deletes a draft registration. A draft that has already been registered cannot be deleted.
+        #### Permissions
+        Only project administrators may delete draft registrations.
+        #### Returns
+        If the request is successful, no content is returned.
+
+        If the request is unsuccessful, a JSON object with an `errors` key containing information about the failure will be returned. Refer to the [list of error codes]() to understand why this request may have failed.
+      operationId: nodes_draft_registrations_delete
+      x-api-path-slug: nodesnode-iddraft-registrationsdraft-id-delete
+      parameters:
+      - in: path
+        name: draft_id
+        description: The unique identifier of the draft registration
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Draft
+      - Registrations
+      - Draft
+    get:
+      summary: Retrieve a draft registration
+      description: |-
+        Retrieve the details of a given draft registration.
+        Draft registrations contain the supplemental registration questions that accompany a registration. A registration is a frozen version of the project that can never be edited or deleted, but can be withdrawn.
+
+        Your original project remains editable but will now have the draft registration linked to it.
+        #### Permissions
+        Only project administrators may view draft registrations.
+        #### Returns
+        Returns a JSON object with a `data` key containing the representation of the requested draft registration, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_draft_registrations_read
+      x-api-path-slug: nodesnode-iddraft-registrationsdraft-id-get
+      parameters:
+      - in: path
+        name: draft_id
+        description: The unique identifier of the draft registration
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Draft
+      - Registrations
+      - Draft
+    patch:
+      summary: Update a draft registration
+      description: |-
+        Updates a draft registration by setting the values of the attributes specified in the request body. Any unspecified attributes will be left unchanged.
+
+        Draft registrations contain the supplemental registration questions that accompany a registration. Answer the questions in the draft registration supplement by sending update requests until you are ready to submit the draft.
+
+        The registration supplement of a draft registration cannot be updated after the draft has been created.
+
+        When updating a draft registration, `registration_metadata` is required. It must be a dictionary with keys as question ids in the registration form, and values as nested dictionaries matching the specific format in the [registration schema](TODO: link me pls).
+
+        If a question is multiple-choice, the question response must exactly match one of the possible choices.
+        #### Permissions
+        Only project administrators may update draft registrations.
+        #### Returns
+        Returns a JSON object with a `data` key containing the new representation of the updated draft registration, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_draft_registrations_partial_update
+      x-api-path-slug: nodesnode-iddraft-registrationsdraft-id-patch
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/holder'
+      - in: path
+        name: draft_id
+        description: The unique identifier of the draft registration
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Draft
+      - Registrations
+      - Draft
+  /nodes/{node_id}/files/:
+    get:
+      summary: List all storage providers
+      description: |-
+        List of all storage providers that are configured for this node
+
+        Users of the OSF may access their data on a [number of cloud-storage services](https://api.osf.io/v2/#storage-providers) that have integrations with the OSF. We call these **providers**. By default, every node has access to the OSF-provided storage but may use as many of the supported providers as desired.
+
+
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of files. Each resource in the array is a separate file object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        Note: In the OSF filesystem model, providers are treated as folders, but with special properties that distinguish them from regular folders. Every provider folder is considered a root folder, and may not be deleted through the regular file API.
+      operationId: nodes_providers_list
+      x-api-path-slug: nodesnode-idfiles-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Files
+  /nodes/{node_id}/files/providers/{provider}/:
+    get:
+      summary: Retrieve a storage provider
+      description: |-
+        Retrieves the details of a storage provider enabled on this node.
+        ####Returns
+        Returns a JSON object with a `data` key containing the representation of the requested file object, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_providers_read
+      x-api-path-slug: nodesnode-idfilesprovidersprovider-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      - in: path
+        name: provider
+        description: The unique identifier of the storage provider
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Files
+      - Providers
+      - Provider
+  /nodes/{node_id}/files/{provider}/:
+    get:
+      summary: List all node files
+      description: |-
+        List of all the files/folders that are attached to your project for a given storage provider.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of files. Each resource in the array is a separate file object and contains the full representation of the file.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        ####Filtering
+
+        You can optionally request that the response only include files that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/files/osfstorage/?filter[kind]=file
+
+        Node files may be filtered by `id`, `name`, `node`, `kind`, `path`, `provider`, `size`, and `last_touched`.
+
+        ###Waterbutler API actions
+
+        Files can be modified through the Waterbutler API routes found in `links` (`new_folder`, `move`, `upload`, `download`, and `delete`).
+
+        #### Download (files)
+
+        To download a file, issue a GET request against the download link. The response will have the Content-Disposition header set, which will will trigger a download in a browser.
+
+        #### Create Subfolder (folders)
+
+        You can create a subfolder of an existing folder by issuing a PUT request against the new_folder link. The ?kind=folder portion of the query parameter is already included in the new_folder link. The name of the new subfolder should be provided in the name query parameter. The response will contain a WaterButler folder entity. If a folder with that name already exists in the parent directory, the server will return a 409 Conflict error response.
+
+        #### Upload New File (folders)
+
+        To upload a file to a folder, issue a PUT request to the folder's upload link with the raw file data in the request body, and the kind and name query parameters set to 'file' and the desired name of the file. The response will contain a WaterButler file entity that describes the new file. If a file with the same name already exists in the folder, the server will return a 409 Conflict error response.
+
+        #### Update Existing File (file)
+
+        To update an existing file, issue a PUT request to the file's upload link with the raw file data in the request body and the kind query parameter set to "file". The update action will create a new version of the file. The response will contain a WaterButler file entity that describes the updated file.
+
+        #### Rename (files, folders)
+
+        To rename a file or folder, issue a POST request to the move link with the action body parameter set to "rename" and the rename body parameter set to the desired name. The response will contain either a folder entity or file entity with the new name.
+
+        #### Move & Copy (files, folders)
+
+        Move and copy actions both use the same request structure, a POST to the move url, but with different values for the action body parameters. The path parameter is also required and should be the OSF path attribute of the folder being written to. The rename and conflict parameters are optional. If you wish to change the name of the file or folder at its destination, set the rename parameter to the new name. The conflict param governs how name clashes are resolved. Possible values are replace and keep. replace is the default and will overwrite the file that already exists in the target folder. keep will attempt to keep both by adding a suffix to the new file's name until it no longer conflicts. The suffix will be ' (x)' where x is a increasing integer starting from 1. This behavior is intended to mimic that of the OS X Finder. The response will contain either a folder entity or file entity with the new name.
+        Files and folders can also be moved between nodes and providers. The resource parameter is the id of the node under which the file/folder should be moved. It must agree with the path parameter, that is the path must identify a valid folder under the node identified by resource. Likewise, the provider parameter may be used to move the file/folder to another storage provider, but both the resource and path parameters must belong to a node and folder already extant on that provider. Both resource and provider default to the current node and providers.
+        If a moved/copied file is overwriting an existing file, a 200 OK response will be returned. Otherwise, a 201 Created will be returned.
+
+        #### Delete (file, folders)
+
+        To delete a file or folder send a DELETE request to the delete link. Nothing will be returned in the response body.
+      operationId: nodes_files_list
+      x-api-path-slug: nodesnode-idfilesprovider-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      - in: path
+        name: provider
+        description: The unique identifier of the storage provider
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Files
+      - Provider
+  /nodes/{node_id}/files/{provider}/{path}/:
+    get:
+      summary: Retrieve a file
+      description: |-
+        Retrieves the details of a file attached to given node (project or component) for the given storage provider.
+        ####Returns
+        Returns a JSON object with a `data` key containing the representation of the requested file object, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_files_read
+      x-api-path-slug: nodesnode-idfilesproviderpath-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      - in: path
+        name: path
+        description: The unique identifier of the file path
+      - in: path
+        name: provider
+        description: The unique identifier of the storage provider
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Files
+      - Provider
+      - Path
+  /nodes/{node_id}/forks/:
+    get:
+      summary: List all forks of this node
+      description: |-
+        A paginated list of the current node's forks. The returned fork nodes are sorted by their `forked_date`, with the most recently forked nodes appearing first.
+
+        Forking a project creates a copy of an existing node and all of its contents. The fork always points back to the original node, forming a network of nodes.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 forked nodes. If the current node has zero forked nodes, the `data` key will contain an empty array. Each resource in the array is a separate node object and contains the full representation of the forked node, meaning additional requests to the forked node's detail view are not necessary.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        This request should never return an error.
+      operationId: nodes_forks_list
+      x-api-path-slug: nodesnode-idforks-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Forks
+    post:
+      summary: Create a fork of this node
+      description: |-
+        Creates a fork of the given node.
+
+        Forking a project creates a copy of an existing node and all of its contents. The fork always points back to the original node, forming a network of nodes.
+
+        You might use a fork to copy another's work to build on and extend. For example, a professor may create an OSF project of materials for individual student use. Each student forks the project to have his or her own copy of the materials to start his/her own work.
+
+        When creating a fork, your fork will only contain public components of the current node and components for which you are a contributor. Private components that you do not have access to will not be forked.
+        #### Required
+        There are no required attributes when creating a fork, as all of the forked node's attributes will be copied from the current node.
+
+        The `title` field is optional, with the default title being "Fork of " prepended to the current node's title.
+        #### Returns
+        Returns a JSON object with a `data` key containing the complete srepresentation of the forked node, if the request is successful.
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: nodes_forks_create
+      x-api-path-slug: nodesnode-idforks-post
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/holder'
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Forks
+  /nodes/{node_id}/identifiers/:
+    get:
+      summary: List all identifiers
+      description: |-
+        List all identifiers associated with a given node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of identifiers. Each resource in the array is a separate identifier object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/identifiers/?filter[category]=ark
+
+        Identifiers may be filtered by their `category` e.g `ark` or `doi`.
+      operationId: nodes_identifiers_list
+      x-api-path-slug: nodesnode-ididentifiers-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Nodeentifiers
+  /nodes/{node_id}/institutions/:
+    get:
+      summary: List all institutions
+      description: |-
+        List of all institutions affiliated with this node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 affilited institutions. Each resource in the array is a separate institution object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+      operationId: nodes_institutions_list
+      x-api-path-slug: nodesnode-idinstitutions-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Institutions
+  /nodes/{node_id}/linked_nodes/:
+    get:
+      summary: List all linked nodes
+      description: |-
+        List of all nodes linked to the given node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 nodes. Each resource in the array is a separate node object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/?filter[title]=reproducibility.
+
+        Nodes may be filtered by their `title`, `category`, `description`, `public`, `registration`, or `tags`. `title`, `description`, and `category` are string fields and will be filteres using simple substring matching. `public`, `registration` are boolean and can be filtered using truthy values, such as `true`, `false`, `0`, `1`. `tags` is an array of simple strings.
+      operationId: nodes_linked_nodes_list
+      x-api-path-slug: nodesnode-idlinked-nodes-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Linked
+      - Nodes
+  /nodes/{node_id}/logs/:
+    get:
+      summary: List all logs
+      description: |-
+        A paginated list of all logs associated with a given node.
+
+        The returned logs are sorted by their `date`, with the most recents logs appearing first.
+
+        This list includes the logs of the specified node as well as the logs of that node's children to which the current user has read-only access.
+
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 logs. Each resource in the array is a separate logs object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include logs that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/logs/?filter[action]=made_private.
+
+        Nodes may be filtered by their `action`, and `date`.
+      operationId: nodes_logs_list
+      x-api-path-slug: nodesnode-idlogs-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Logs
+  /nodes/{node_id}/preprints/:
+    get:
+      summary: List all preprints
+      description: |-
+        A paginated list of preprints related to a given node. The returned preprints are sorted by their creation date, with the most recent preprints appearing first.
+
+        **Note: This API endpoint is under active development, and is subject to change in the future.**
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 preprints. Each resource in the array is a separate preprint object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+      operationId: nodes_preprints_list
+      x-api-path-slug: nodesnode-idpreprints-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Preprints
+  /nodes/{node_id}/registrations/:
+    get:
+      summary: List all registrations
+      description: |-
+        List of all registrations of the given node.
+        ####Returns
+
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 registrations. Each resource in the array is a separate registrations object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+
+        You can optionally request that the response only include registrations that match your filters by utilizing the filter query parameter, e.g. https://api.osf.io/v2/registrations/?filter[title]=open.
+
+        Registrations may be filtered by their `id`, `title`, `category`, `description`, `public`, `tags`, `date_created`, `date_modified`, `root`, `parent`, and `contributors`.
+      operationId: nodes_registrations_list
+      x-api-path-slug: nodesnode-idregistrations-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Registrations
+  /nodes/{node_id}/view_only_links/:
+    get:
+      summary: List all view only links
+      description: |-
+        List of view only links on a node.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 view only links. Each resource in the array is a view only link object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        ####Permissions
+
+        View only links on a node, public or private, are readable and writeable only by users that are administrators on the node.
+
+        ####Filtering
+
+        You can optionally request that the response only include view only links that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/nodes/ezcuj/view_only_links/?filter[anonymous]=true.
+
+        View Only Links may be filtered based on their `name`, `anonymous` and `date_created` fields. Possible comparison operators include 'gt' (greater than), 'gte'(greater than or equal to), 'lt' (less than) and 'lte' (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+      operationId: nodes_view_only_links_list
+      x-api-path-slug: nodesnode-idview-only-links-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - View
+      - Only
+      - Links
+  /nodes/{node_id}/view_only_links/{link_id}/:
+    get:
+      summary: Retrieve a view only link
+      description: |-
+        Retrieves the details of a view only link on a node.
+        ####Returns
+        Returns a JSON object with a `data` key containing the representation of the requested view only link, if the request is successful.
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+        ####Permissions
+
+        View only links on a node, public or private, are readable and writeable only by users that are administrators on the node.
+      operationId: nodes_view_only_links_read
+      x-api-path-slug: nodesnode-idview-only-linkslink-id-get
+      parameters:
+      - in: path
+        name: link_id
+        description: The unique identifier of the view only link
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - View
+      - Only
+      - Links
+      - Link
+  /nodes/{node_id}/wikis/:
+    get:
+      summary: List all wikis
+      description: |-
+        List of wiki pages on a node.
+        ####Returns
+        Paginated list of the node's current wiki page versions ordered by their date_modified. Each resource contains the full representation of the wiki, meaning additional requests to an individual wiki's detail view are not necessary.
+
+        Note that if an anonymous view_only key is being used, the user relationship will not be exposed.
+
+        If the request is unsuccessful, a JSON object with an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+        #### Filtering
+        Wiki pages can be filtered based on their `name` and `date_modified` fields.
+        + `filter[name]=<Str>` -- filter wiki pages by name
+        + `filter[date_modified][comparison_operator]=YYYY-MM-DDTH:M:S` -- filter wiki pages based on date modified.
+
+        Possible comparison operators include 'gt' (greater than), 'gte'(greater than or equal to), 'lt' (less than) and 'lte' (less than or equal to). The date must be in the format YYYY-MM-DD and the time is optional.
+      operationId: nodes_wikis_list
+      x-api-path-slug: nodesnode-idwikis-get
+      parameters:
+      - in: path
+        name: node_id
+        description: The unique identifier of the node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Nodes
+      - Node
+      - Wikis
+  /registrations/{registration_id}/linked_nodes/:
+    get:
+      summary: List all linked nodes
+      description: |-
+        List of all nodes linked to the registration.
+        ####Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of up to 10 nodes. Each resource in the array is a separate node object.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        ####Filtering
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/registrations/wucr8/linked_nodes/?filter[title]=reproducibility/?filter[title]=reproducibility.
+
+        Nodes may be filtered by their `title`, `category`, `description`, `public`, `registration`, or `tags`. `title`, `description`, and `category` are string fields and will be filteres using simple substring matching. `public`, `registration` are boolean and can be filtered using truthy values, such as `true`, `false`, `0`, `1`. `tags` is an array of simple strings.
+      operationId: registrations_linked_nodes_list
+      x-api-path-slug: registrationsregistration-idlinked-nodes-get
+      parameters:
+      - in: path
+        name: registration_id
+        description: The unique identifier of the registration
+      responses:
+        200:
+          description: OK
+      tags:
+      - Registrations
+      - Registration
+      - Linked
+      - Nodes
+  /users/{user_id}/nodes/:
+    get:
+      summary: List all nodes
+      description: |-
+        A paginated list of nodes that the user is a contributor to. The returned nodes are sorted by their `date_modified`, with the most recently updated nodes appearing first.
+
+        If the user ID in the path is the same as the logged-in user, all nodes will be returned. Otherwise, only the user's public nodes will be returned.
+
+        User registrations are not available at this endpoint.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+
+        The `data` key contains an array of 10 nodes. Each resource in the array is a separate node object and contains the full representation of the node, meaning additional requests to a node's detail view are not necessary.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+        #### Filtering
+        You can optionally request that the response only include nodes that match your filters by utilizing the `filter` query parameter, e.g. https://api.osf.io/v2/users/cdi38/nodes/?filter[title]=open.
+
+        Nodes may be filtered by their `id`, `title`, `category`, `description`, `public`, `tags`, `date_created`, `date_modified`, `root`, `parent`, `preprint`, and `contributors`.
+      operationId: users_nodes_list
+      x-api-path-slug: usersuser-idnodes-get
+      parameters:
+      - in: path
+        name: user_id
+        description: The unique identifier of the user
+      responses:
+        200:
+          description: OK
+      tags:
+      - Users
+      - User
+      - Nodes
+  /view_only_links/{link_id}/nodes/:
+    get:
+      summary: List all nodes
+      description: |-
+        The list of nodes which this view only link gives read-only access to.
+        #### Permissions
+        Only project administrators may retrieve the nodes of a view only link. Attempting to retrieve a view only link without appropriate permissions will result in a 403 Forbidden response.
+        #### Returns
+        Returns a JSON object containing `data` and `links` keys.
+        The `data` key contains an array of up to 10 nodes. Each resource in the array is a separate node object and contains the full representation of the node, meaning additional requests to a node's detail view are not necessary.
+
+        The `links` key contains a dictionary of links that can be used for [pagination](#Introduction_pagination).
+
+        If the request is unsuccessful, an `errors` key containing information about the failure will be returned. Refer to the [list of error codes](#Introduction_error_codes) to understand why this request may have failed.
+      operationId: view_only_links_node_list
+      x-api-path-slug: view-only-linkslink-idnodes-get
+      parameters:
+      - in: path
+        name: link_id
+        description: The unique identifier of the view only link
+      responses:
+        200:
+          description: OK
+      tags:
+      - View
+      - Only
+      - Links
+      - Link
+      - Nodes
+  /:
+    get:
+      summary: Root
+      description: |-
+        Welcome to the Open Science Framework API. With this API you can access users, projects, components, logs, and files from the [Open Science Framework](https://osf.io/). The Open Science Framework (OSF) is a free, open-source service maintained by the [Center for Open Science](http://cos.io/).
+
+        #### Returns
+        A JSON object with `meta` and `links` keys.
+
+        The `meta` key contains information such as a welcome message from the API, the specified version of the request, and the full representation of the current user, if authentication credentials were provided in the request.
+
+        The `links` key contains links to the following entity collections: [addons](), [collections](), [institutions](#Institutions_institutions_list), [licenses](#Licenses_license_list), [metaschemas](), [nodes](#Nodes_nodes_list), [registrations](), [users](#Users_users_list)
+      operationId: base_read
+      x-api-path-slug: get
+      responses:
+        200:
+          description: OK
+      tags:
+      - Root
+  /actions/:
+    get:
+      summary: Actions
+      description: |-
+        A log can have one of many actions. The complete list of loggable actions (in the format {identifier}: {description}) is as follows:
+        * `project_created`: A Node is created
+        * `project_registered`: A Node is registered
+        * `project_deleted`: A Node is deleted
+        * `created_from`: A Node is created using an existing Node as a template
+        * `pointer_created`: A Pointer is created
+        * `pointer_forked`: A Pointer is forked
+        * `pointer_removed`: A Pointer is removed
+        * `node_removed`: A component is deleted
+        * `node_forked`: A Node is forked
+        ---
+        * `made_public`: A Node is made public
+        * `made_private`: A Node is made private
+        * `tag_added`: A tag is added to a Node
+        * `tag_removed`: A tag is removed from a Node
+        * `edit_title`: A Node's title is changed
+        * `edit_description`: A Node's description is changed
+        * `updated_fields`: One or more of a Node's fields are changed
+        * `external_ids_added`: An external identifier is added to a Node (e.g. DOI, ARK)
+        * `view_only_link_added`: A view-only link was added to a Node
+        * `view_only_link_removed`:  A view-only link was removed from a Node
+        ---
+        * `contributor_added`: A Contributor is added to a Node
+        * `contributor_removed`: A Contributor is removed from a Node
+        * `contributors_reordered`: A Contributor's position in a Node's bibliography is changed
+        * `permissions_updated`: A Contributor`s permissions on a Node are changed
+        * `made_contributor_visible`: A Contributor is made bibliographically visible on a Node
+        * `made_contributor_invisible`: A Contributor is made bibliographically invisible on a Node
+        ---
+        * `wiki_updated`: A Node's wiki is updated
+        * `wiki_deleted`: A Node's wiki is deleted
+        * `wiki_renamed`: A Node's wiki is renamed
+        * `made_wiki_public`: A Node's wiki is made public
+        * `made_wiki_private`: A Node's wiki is made private
+        ---
+        * `addon_added`: An add-on is linked to a Node
+        * `addon_removed`: An add-on is unlinked from a Node
+        * `addon_file_moved`: A File in a Node's linked add-on is moved
+        * `addon_file_copied`: A File in a Node's linked add-on is copied
+        * `addon_file_renamed`: A File in a Node's linked add-on is renamed
+        * `node_authorized`: An addon is authorized for a project
+        * `node_deauthorized`: An addon is deauthorized for a project
+        * `folder_created`: A Folder is created in a Node's linked add-on
+        * `file_added`: A File is added to a Node's linked add-on
+        * `file_updated`: A File is updated on a Node's linked add-on
+        * `file_removed`: A File is removed from a Node's linked add-on
+        * `file_restored`: A File is restored in a Node's linked add-on
+        ---
+        * `comment_added`: A Comment is added to some item
+        * `comment_removed`: A Comment is removed from some item
+        * `comment_updated`: A Comment is updated on some item
+        ---
+        * `embargo_initiated`: An embargoed Registration is proposed on a Node
+        * `embargo_approved`: A proposed Embargo of a Node is approved
+        * `embargo_cancelled`: A proposed Embargo of a Node is cancelled
+        * `embargo_completed`: A proposed Embargo of a Node is completed
+        * `retraction_initiated`: A Withdrawal of a Registration is proposed
+        * `retraction_approved`: A Withdrawal of a Registration is approved
+        * `retraction_cancelled`: A Withdrawal of a Registration is cancelled
+        * `registration_initiated`: A Registration of a Node is proposed
+        * `registration_approved`: A proposed Registration is approved
+        * `registration_cancelled`: A proposed Registration is cancelled
+      operationId: logs_actions
+      x-api-path-slug: actions-get
+      responses:
+        200:
+          description: OK
+      tags:
+      - Actions
 x-streamrank:
   polling_total_time_average: 0
   polling_size_download_average: 0

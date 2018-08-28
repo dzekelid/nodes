@@ -91,6 +91,190 @@ paths:
       tags:
       - Nodes
       - Name
+  /api/v1beta3/proxy/nodes/{name}:
+    delete:
+      summary: Delete Proxy Nodes Name
+      description: Proxy delete requests to node.
+      operationId: proxyDELETENode
+      x-api-path-slug: apiv1beta3proxynodesname-delete
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+    get:
+      summary: Get Proxy Nodes Name
+      description: Proxy get requests to node.
+      operationId: proxyGETNode
+      x-api-path-slug: apiv1beta3proxynodesname-get
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+    post:
+      summary: Post Proxy Nodes Name
+      description: Proxy post requests to node.
+      operationId: proxyPOSTNode
+      x-api-path-slug: apiv1beta3proxynodesname-post
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+    put:
+      summary: Put Proxy Nodes Name
+      description: Proxy put requests to node.
+      operationId: proxyPUTNode
+      x-api-path-slug: apiv1beta3proxynodesname-put
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+  /api/v1beta3/proxy/nodes/{name}/{path:*}:
+    delete:
+      summary: Delete Proxy Nodes Name Path *
+      description: Proxy delete requests to node.
+      operationId: proxyDELETENode
+      x-api-path-slug: apiv1beta3proxynodesnamepath-delete
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+      - Path
+      - '*'
+    get:
+      summary: Get Proxy Nodes Name Path *
+      description: Proxy get requests to node.
+      operationId: proxyGETNode
+      x-api-path-slug: apiv1beta3proxynodesnamepath-get
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+      - Path
+      - '*'
+    post:
+      summary: Post Proxy Nodes Name Path *
+      description: Proxy post requests to node.
+      operationId: proxyPOSTNode
+      x-api-path-slug: apiv1beta3proxynodesnamepath-post
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+      - Path
+      - '*'
+    put:
+      summary: Put Proxy Nodes Name Path *
+      description: Proxy put requests to node.
+      operationId: proxyPUTNode
+      x-api-path-slug: apiv1beta3proxynodesnamepath-put
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Proxy
+      - Nodes
+      - Name
+      - Path
+      - '*'
+  /api/v1beta3/redirect/nodes/{name}:
+    get:
+      summary: Get Redirect Nodes Name
+      description: Redirect get request to node.
+      operationId: redirectNode
+      x-api-path-slug: apiv1beta3redirectnodesname-get
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Redirect
+      - Nodes
+      - Name
+  /api/v1beta3/watch/nodes:
+    get:
+      summary: Get Watch Nodes
+      description: Watch a list of node.
+      operationId: watchNodelist
+      x-api-path-slug: apiv1beta3watchnodes-get
+      responses:
+        200:
+          description: OK
+      tags:
+      - Watch
+      - Nodes
+  /api/v1beta3/watch/nodes/{name}:
+    get:
+      summary: Get Watch Nodes Name
+      description: Watch a particular node.
+      operationId: watchNode
+      x-api-path-slug: apiv1beta3watchnodesname-get
+      parameters:
+      - in: path
+        name: name
+        description: name of the Node
+      responses:
+        200:
+          description: OK
+      tags:
+      - Watch
+      - Nodes
+      - Name
 x-streamrank:
   polling_total_time_average: 0
   polling_size_download_average: 0
